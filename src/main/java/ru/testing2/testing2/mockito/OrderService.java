@@ -16,6 +16,8 @@ import java.util.List;
 public class OrderService {
 
     private final ArchiveService archiveService;
+
+    private final NotificationService notificationService;
     private final DatabaseService databaseService;
     private final ProcessService processService;
 
@@ -26,6 +28,7 @@ public class OrderService {
             if (order.isRequiredToArchive()) {
                 archiveService.logOrderToArchive(order);
             }
+            notificationService.sendNotification(order);
             databaseService.save(order);
         }catch (Exception ignored){
             throw new OrderAddingException();
